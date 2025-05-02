@@ -1,4 +1,4 @@
-Czas: pią, 2 maj 2025, 16:57:28 CEST
+Czas: pią, 2 maj 2025, 17:20:58 CEST
 ==== Informacje o CPU ====
 Architektura:                         x86_64
 Tryb(y) pracy CPU:                    32-bit, 64-bit
@@ -14,7 +14,7 @@ Wątków na rdzeń:                      2
 Rdzeni na gniazdo:                    12
 Gniazd:                               1
 Wersja:                               2
-CPU(s) scaling MHz:                   27%
+CPU(s) scaling MHz:                   29%
 CPU max MHz:                          4700,0000
 CPU min MHz:                          400,0000
 BogoMIPS:                             6374,40
@@ -43,14 +43,14 @@ Vulnerability Tsx async abort:        Not affected
 
 ==== Informacje o Pamięci ====
                razem       użyte       wolne    dzielone   buf/cache    dostępne
-Pamięć:        15730        6272        4340        1078        6532        9458
+Pamięć:        15730        6585        3933        1047        6595        9145
 Wymiana:        4095           0        4095
 
 ==== Informacje o Dyskach ====
 System plików  rozm. użyte dost. %uż. zamont. na
 tmpfs           1,6G  3,0M  1,6G   1% /run
 /dev/nvme0n1p5   77G   27G   47G  37% /
-tmpfs           7,7G  105M  7,6G   2% /dev/shm
+tmpfs           7,7G  146M  7,6G   2% /dev/shm
 tmpfs           5,0M   12K  5,0M   1% /run/lock
 efivarfs        268K  193K   71K  74% /sys/firmware/efi/efivars
 /dev/nvme0n1p1  256M   49M  208M  20% /boot/efi
@@ -60,7 +60,7 @@ tmpfs           1,6G  9,5M  1,6G   1% /run/user/1000
 Linux Lenovo-Karol 6.11.0-19-generic #19~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Feb 17 11:51:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
 
 -----------------------------
-Czas: pią, 2 maj 2025, 16:57:31 CEST
+Czas: pią, 2 maj 2025, 17:21:01 CEST
 ==== Informacje o CPU ====
 Architektura:                         x86_64
 Tryb(y) pracy CPU:                    32-bit, 64-bit
@@ -76,7 +76,7 @@ Wątków na rdzeń:                      2
 Rdzeni na gniazdo:                    12
 Gniazd:                               1
 Wersja:                               2
-CPU(s) scaling MHz:                   17%
+CPU(s) scaling MHz:                   18%
 CPU max MHz:                          4700,0000
 CPU min MHz:                          400,0000
 BogoMIPS:                             6374,40
@@ -105,14 +105,76 @@ Vulnerability Tsx async abort:        Not affected
 
 ==== Informacje o Pamięci ====
                razem       użyte       wolne    dzielone   buf/cache    dostępne
-Pamięć:        15730        6278        4334        1076        6530        9452
+Pamięć:        15730        6595        3924        1054        6603        9135
 Wymiana:        4095           0        4095
 
 ==== Informacje o Dyskach ====
 System plików  rozm. użyte dost. %uż. zamont. na
 tmpfs           1,6G  3,0M  1,6G   1% /run
 /dev/nvme0n1p5   77G   27G   47G  37% /
-tmpfs           7,7G  106M  7,6G   2% /dev/shm
+tmpfs           7,7G  153M  7,6G   2% /dev/shm
+tmpfs           5,0M   12K  5,0M   1% /run/lock
+efivarfs        268K  193K   71K  74% /sys/firmware/efi/efivars
+/dev/nvme0n1p1  256M   49M  208M  20% /boot/efi
+tmpfs           1,6G  9,5M  1,6G   1% /run/user/1000
+
+==== Informacje o Systemie ====
+Linux Lenovo-Karol 6.11.0-19-generic #19~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Feb 17 11:51:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+
+-----------------------------
+Czas: pią, 2 maj 2025, 17:21:04 CEST
+==== Informacje o CPU ====
+Architektura:                         x86_64
+Tryb(y) pracy CPU:                    32-bit, 64-bit
+Address sizes:                        39 bits physical, 48 bits virtual
+Kolejność bajtów:                     Little Endian
+CPU:                                  16
+Lista aktywnych CPU:                  0-15
+ID producenta:                        GenuineIntel
+Nazwa modelu:                         13th Gen Intel(R) Core(TM) i5-13500H
+Rodzina CPU:                          6
+Model:                                186
+Wątków na rdzeń:                      2
+Rdzeni na gniazdo:                    12
+Gniazd:                               1
+Wersja:                               2
+CPU(s) scaling MHz:                   20%
+CPU max MHz:                          4700,0000
+CPU min MHz:                          400,0000
+BogoMIPS:                             6374,40
+Flagi:                                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb intel_pt sha_ni xsaveopt xsavec xgetbv1 xsaves split_lock_detect user_shstk avx_vnni dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp hwp_pkg_req hfi vnmi umip pku ospke waitpkg gfni vaes vpclmulqdq rdpid movdiri movdir64b fsrm md_clear serialize arch_lbr ibt flush_l1d arch_capabilities
+Wirtualizacja:                        VT-x
+Cache L1d:                            448 KiB (12 instances)
+Cache L1i:                            640 KiB (12 instances)
+Cache L2:                             9 MiB (6 instances)
+Cache L3:                             18 MiB (1 instance)
+Węzłów NUMA:                          1
+Procesory węzła NUMA 0:               0-15
+Vulnerability Gather data sampling:   Not affected
+Vulnerability Itlb multihit:          Not affected
+Vulnerability L1tf:                   Not affected
+Vulnerability Mds:                    Not affected
+Vulnerability Meltdown:               Not affected
+Vulnerability Mmio stale data:        Not affected
+Vulnerability Reg file data sampling: Mitigation; Clear Register File
+Vulnerability Retbleed:               Not affected
+Vulnerability Spec rstack overflow:   Not affected
+Vulnerability Spec store bypass:      Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:             Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:             Mitigation; Enhanced / Automatic IBRS; IBPB conditional; RSB filling; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S
+Vulnerability Srbds:                  Not affected
+Vulnerability Tsx async abort:        Not affected
+
+==== Informacje o Pamięci ====
+               razem       użyte       wolne    dzielone   buf/cache    dostępne
+Pamięć:        15730        6597        3921        1054        6603        9133
+Wymiana:        4095           0        4095
+
+==== Informacje o Dyskach ====
+System plików  rozm. użyte dost. %uż. zamont. na
+tmpfs           1,6G  3,0M  1,6G   1% /run
+/dev/nvme0n1p5   77G   27G   47G  37% /
+tmpfs           7,7G  153M  7,6G   2% /dev/shm
 tmpfs           5,0M   12K  5,0M   1% /run/lock
 efivarfs        268K  193K   71K  74% /sys/firmware/efi/efivars
 /dev/nvme0n1p1  256M   49M  208M  20% /boot/efi

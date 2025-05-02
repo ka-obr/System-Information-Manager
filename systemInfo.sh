@@ -9,6 +9,9 @@
 
 #!/bin/bash
 
+# Importowanie modułu info_collector.sh
+source "/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/infoCollector.sh"
+
 VERSION="1.0"
 AUTHOR="Karol Obrycki"
 REPORT_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/system_report.txt"
@@ -25,42 +28,6 @@ help() {
 show_version() {
     echo "Wersja: $VERSION"
     echo "Autor: $AUTHOR"
-}
-
-# Funkcja do zbierania informacji o CPU
-collect_cpu_info() {
-    echo "==== Informacje o CPU ===="
-    lscpu
-}
-
-# Funkcja do zbierania informacji o pamięci
-collect_memory_info() {
-    echo "==== Informacje o Pamięci ===="
-    free -m
-}
-
-# Funkcja do zbierania informacji o dyskach
-collect_disk_info() {
-    echo "==== Informacje o Dyskach ===="
-    df -h
-}
-
-# Funkcja do zbierania informacji o systemie
-collect_system_info() {
-    echo "==== Informacje o Systemie ===="
-    uname -a
-}
-
-# Funkcja główna do zbierania wszystkich informacji
-collect_info() {
-    collect_cpu_info
-    echo
-    collect_memory_info
-    echo
-    collect_disk_info
-    echo
-    collect_system_info
-    echo
 }
 
 dynamic_refresh() {
@@ -93,7 +60,7 @@ save_report() {
     echo "Raport zapisany do $REPORT_FILE."
 }
 
-while getopts dhrvs: OPT; do
+while getopts dhrvs OPT; do
     case $OPT in
         h)
             help
