@@ -1,7 +1,7 @@
 # Author           : Karol Obrycki
 # Created On       : 29.04.2025
 # Last Modified By : Karol Obrycki
-# Last Modified On : 29.04.2025 
+# Last Modified On : 02.05.2025 
 # Version          : 0.1
 #
 # Licensed under GPL (see /usr/share/common-licenses/GPL for more details
@@ -19,10 +19,11 @@ INTERVAL=3
 
 help() {
     echo "Opcje:"
-    echo "-d SEKUNDY    - dynamiczne odświeżanie co N sekund"
+    echo "-d            - dynamiczne odświeżanie co $INTERVAL sekund"
     echo "-r            - zapisanie danych do raportu"
     echo "-h            - pomoc"
     echo "-v            - wersja i autor"
+    echo "-s            - zbieranie danych z systemu przez pewien czas"
 }
 
 show_version() {
