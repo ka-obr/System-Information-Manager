@@ -1,0 +1,31 @@
+.TH SYSTEMINFO 1 "29 April 2025" "Version 1.0" "System Information Manager Manual"
+.SH NAME
+systemInfo \- skrypt do zbierania informacji o systemie i generowania raportów
+.SH SYNOPSIS
+.B systemInfo
+[\-d] [\-r] [\-h] [\-v] [\-s]
+.SH DESCRIPTION
+Skrypt \fBsystemInfo\fR służy do zbierania informacji o systemie, takich jak dane o CPU, pamięci, dyskach i systemie operacyjnym. Może działać w trybie dynamicznego odświeżania, generować raporty lub wyświetlać wersję i autora.
+
+.SH OPTIONS
+.TP
+.B \-d
+Uruchamia tryb dynamicznego odświeżania informacji o systemie co określoną liczbę sekund (domyślnie 3 sekundy). Aby wyjść z trybu, naciśnij \fBq\fR.
+.TP
+.B \-r
+Zapisuje dane do raportu w pliku \fBsystem_report.txt\fR. Użytkownik jest proszony o podanie czasu trwania w sekundach.
+.TP
+.B \-h
+Wyświetla pomoc dotyczącą użycia skryptu.
+.TP
+.B \-v
+Wyświetla wersję skryptu i informacje o autorze.
+.TP
+.B \-s
+Zbiera informacje o systemie i wyświetla je w terminalu.
+
+.SH AUTHOR
+Karol Obrycki
+
+.SH COPYRIGHT
+Copyright (C) 2025 Karol Obrycki. Licencjonowane na podstawie GPL. Szczegóły licencji można znaleźć w \fB/usr/share/common-licenses/GPL\fR lub kontaktując się z Free Software Foundation.
