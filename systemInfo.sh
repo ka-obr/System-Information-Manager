@@ -11,8 +11,8 @@
 
 VERSION="1.0"
 AUTHOR="Karol Obrycki"
-REPORT_FILE="/tmp/system_report.txt"
-INTERVAL=5
+REPORT_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/system_report.txt"
+INTERVAL=3
 
 help() {
     echo "Opcje:"
@@ -64,13 +64,12 @@ collect_info() {
 }
 
 dynamic_refresh() {
-    local interval=$1
     while true; do
         clear
-        echo "Dynamiczne odświeżanie co $interval sekund"
+        echo "Dynamiczne odświeżanie co $INTERVAL sekund"
         echo "Czas: $(date)"
         collect_info
-        sleep "$interval" &  # Uruchamiamy sleep w tle
+        sleep "$INTERVAL" &  # Uruchamiamy sleep w tle
         wait -n              # Czekamy na zakończenie sleep lub wciśnięcie klawisza
         read -t 0.1 -n 1 key # Odczytujemy klawisz z timeoutem
         if [[ $key == "q" ]]; then
@@ -80,7 +79,21 @@ dynamic_refresh() {
     done
 }
 
-while getopts dhrv OPT; do
+save_report() {
+    local duration=$1
+    local end_time=$((SECONDS + duration))
+    echo "Zbieranie danych przez $duration sekund. Raport zostanie zapisany do $REPORT_FILE."
+    > "$REPORT_FILE"  # Wyczyszczenie pliku raportu
+    while [ $SECONDS -lt $end_time ]; do
+        echo "Czas: $(date)" >> "$REPORT_FILE"
+        collect_info >> "$REPORT_FILE"
+        echo "-----------------------------" >> "$REPORT_FILE"
+        sleep "$INTERVAL"
+    done
+    echo "Raport zapisany do $REPORT_FILE."
+}
+
+while getopts dhrvs: OPT; do
     case $OPT in
         h)
             help
@@ -88,8 +101,15 @@ while getopts dhrv OPT; do
         d)
             dynamic_refresh "$INTERVAL"
             exit;;
+        r)
+            read -p "Podaj czas trwania w sekundach: " duration
+            save_report "$duration"
+            exit;;
         v)
             show_version
+            exit;;
+        s)
+            collect_info
             exit;;
         *)
             echo "Nieznana opcja."
