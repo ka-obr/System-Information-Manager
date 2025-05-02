@@ -69,6 +69,7 @@ zenity_interface() {
         --column="Opcja" --column="Opis" \
         "Dynamiczne odświeżanie" "Wyświetlanie danych w czasie rzeczywistym" \
         "Zapis raportu" "Zapis danych do pliku raportu" \
+        "Wyświetl dane" "Wyświetlenie aktualnych danych o systemie" \
         "Pomoc" "Wyświetlenie dostępnych opcji" \
         "Wersja" "Informacje o wersji i autorze" \
         --width=600 --height=300)
@@ -81,6 +82,9 @@ zenity_interface() {
         "Zapis raportu")
             local duration=$(zenity --entry --title="Zapis raportu" --text="Podaj czas trwania w sekundach:" --entry-text="10")
             save_report "$duration"
+            ;;
+        "Wyświetl dane")
+            collect_info
             ;;
         "Pomoc")
             zenity --info --title="Pomoc" --text="$(help)"
