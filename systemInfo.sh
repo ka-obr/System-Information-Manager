@@ -27,29 +27,71 @@ show_version() {
     echo "Autor: $AUTHOR"
 }
 
-collect_info() {
+# Funkcja do zbierania informacji o CPU
+collect_cpu_info() {
     echo "==== Informacje o CPU ===="
     lscpu
+}
+
+# Funkcja do zbierania informacji o pamięci
+collect_memory_info() {
     echo "==== Informacje o Pamięci ===="
     free -m
+}
+
+# Funkcja do zbierania informacji o dyskach
+collect_disk_info() {
     echo "==== Informacje o Dyskach ===="
     df -h
+}
+
+# Funkcja do zbierania informacji o systemie
+collect_system_info() {
     echo "==== Informacje o Systemie ===="
     uname -a
 }
 
-while getopts ad:hrv OPT; do
+# Funkcja główna do zbierania wszystkich informacji
+collect_info() {
+    collect_cpu_info
+    echo
+    collect_memory_info
+    echo
+    collect_disk_info
+    echo
+    collect_system_info
+    echo
+}
+
+dynamic_refresh() {
+    local interval=$1
+    while true; do
+        clear
+        echo "Dynamiczne odświeżanie co $interval sekund"
+        echo "Czas: $(date)"
+        collect_info
+        sleep "$interval" &  # Uruchamiamy sleep w tle
+        wait -n              # Czekamy na zakończenie sleep lub wciśnięcie klawisza
+        read -t 0.1 -n 1 key # Odczytujemy klawisz z timeoutem
+        if [[ $key == "q" ]]; then
+            echo "Wyjście z trybu dynamicznego."
+            break
+        fi
+    done
+}
+
+while getopts dhrv OPT; do
     case $OPT in
         h)
             help
             exit;;
-        a)
-            collect_info
+        d)
+            dynamic_refresh "$INTERVAL"
             exit;;
         v)
             show_version
             exit;;
-        ?)
+        *)
             echo "Nieznana opcja."
             help
             exit 1;;
