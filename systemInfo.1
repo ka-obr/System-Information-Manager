@@ -1,9 +1,9 @@
-.TH SYSTEMINFO 1 "02 May 2025" "Version 1.0" "System Information Manager Manual"
+.TH SYSTEMINFO 1 "03 May 2025" "Version 1.0" "System Information Manager Manual"
 .SH NAME
 systemInfo \- skrypt do zbierania informacji o systemie i generowania raportów
 .SH SYNOPSIS
 .B systemInfo
-[\-d] [\-r] [\-h] [\-v] [\-s]
+[\-d] [\-r] [\-h] [\-v] [\-s] [\-z]
 .SH DESCRIPTION
 Skrypt \fBsystemInfo\fR służy do zbierania informacji o systemie, takich jak dane o CPU, pamięci, dyskach i systemie operacyjnym. Może działać w trybie dynamicznego odświeżania, generować raporty lub wyświetlać wersję i autora.
 
@@ -23,6 +23,9 @@ Wyświetla wersję skryptu i informacje o autorze.
 .TP
 .B \-s
 Zbiera informacje o systemie i wyświetla je w terminalu.
+.TP
+.B \-z
+Uruchamia interfejs graficzny z użyciem Zenity, który pozwala użytkownikowi wybrać jedną z dostępnych opcji, takich jak dynamiczne odświeżanie, zapis raportu, wyświetlenie pomocy lub informacji o wersji.
 
 .SH AUTHOR
 Karol Obrycki

@@ -1,7 +1,7 @@
 # Author           : Karol Obrycki
 # Created On       : 29.04.2025
 # Last Modified By : Karol Obrycki
-# Last Modified On : 02.05.2025 
+# Last Modified On : 03.05.2025 
 # Version          : 0.1
 #
 # Licensed under GPL (see /usr/share/common-licenses/GPL for more details
@@ -24,6 +24,7 @@ help() {
     echo "-h            - pomoc"
     echo "-v            - wersja i autor"
     echo "-s            - zbieranie danych z systemu przez pewien czas"
+    echo "-z            - interfejs graficzny z użyciem zenity"
 }
 
 show_version() {
@@ -61,7 +62,39 @@ save_report() {
     echo "Raport zapisany do $REPORT_FILE."
 }
 
-while getopts dhrvs OPT; do
+zenity_interface() {
+    local choice=$(zenity --list \
+        --title="System Information Manager" \
+        --text="Wybierz opcję:" \
+        --column="Opcja" --column="Opis" \
+        "Dynamiczne odświeżanie" "Wyświetlanie danych w czasie rzeczywistym" \
+        "Zapis raportu" "Zapis danych do pliku raportu" \
+        "Pomoc" "Wyświetlenie dostępnych opcji" \
+        "Wersja" "Informacje o wersji i autorze" \
+        --width=600 --height=300)
+
+    case $choice in
+        "Dynamiczne odświeżanie")
+            INTERVAL=$(zenity --entry --title="Dynamiczne odświeżanie" --text="Podaj interwał w sekundach:" --entry-text="3")
+            dynamic_refresh "$INTERVAL"
+            ;;
+        "Zapis raportu")
+            local duration=$(zenity --entry --title="Zapis raportu" --text="Podaj czas trwania w sekundach:" --entry-text="10")
+            save_report "$duration"
+            ;;
+        "Pomoc")
+            zenity --info --title="Pomoc" --text="$(help)"
+            ;;
+        "Wersja")
+            zenity --info --title="Wersja" --text="$(show_version)"
+            ;;
+        *)
+            zenity --error --title="Błąd" --text="Nieznana opcja lub anulowano wybór."
+            ;;
+    esac
+}
+
+while getopts dhrvsz OPT; do
     case $OPT in
         h)
             help
@@ -78,6 +111,9 @@ while getopts dhrvs OPT; do
             exit;;
         s)
             collect_info
+            exit;;
+        z)
+            zenity_interface
             exit;;
         *)
             echo "Nieznana opcja."
