@@ -1,0 +1,3 @@
+# Konfiguracja dla System Information Manager
+INTERVAL=3
+REPORT_FILE=/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/tmp/system_report.txt

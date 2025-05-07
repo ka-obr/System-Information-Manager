@@ -14,7 +14,8 @@ source "/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/infoC
 
 VERSION="1.0"
 AUTHOR="Karol Obrycki"
-REPORT_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/system_report.txt"
+CONFIG_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/config.txt"
+REPORT_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/tmp/system_report.txt"
 INTERVAL=3
 
 help() {
@@ -62,6 +63,28 @@ save_report() {
     echo "Raport zapisany do $REPORT_FILE."
 }
 
+# Funkcja do odczytu konfiguracji
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then
+        source "$CONFIG_FILE"
+    else
+        echo "Plik konfiguracyjny nie istnieje. Tworzę domyślny plik."
+        save_config
+    fi
+}
+
+# Funkcja do zapisu konfiguracji
+save_config() {
+    cat > "$CONFIG_FILE" <<EOL
+# Konfiguracja dla System Information Manager
+INTERVAL=$INTERVAL
+REPORT_FILE=$REPORT_FILE
+EOL
+    echo "Konfiguracja zapisana do $CONFIG_FILE."
+}
+
+load_config
+
 zenity_interface() {
     local choice=$(zenity --list \
         --title="System Information Manager" \
@@ -92,19 +115,22 @@ zenity_interface() {
         "Wersja")
             zenity --info --title="Wersja" --text="$(show_version)"
             ;;
+        "Zapisz konfigurację")
+            save_config
+            ;;
         *)
             zenity --error --title="Błąd" --text="Nieznana opcja lub anulowano wybór."
             ;;
     esac
 }
 
-while getopts dhrvsz OPT; do
+while getopts dhrvsc OPT; do
     case $OPT in
         h)
             help
             exit;;
         d)
-            dynamic_refresh "$INTERVAL"
+            dynamic_refresh
             exit;;
         r)
             read -p "Podaj czas trwania w sekundach: " duration
@@ -118,6 +144,10 @@ while getopts dhrvsz OPT; do
             exit;;
         z)
             zenity_interface
+            exit;;
+        c)
+            save_config
+            echo "Konfiguracja została zapisana do pliku $CONFIG_FILE."
             exit;;
         *)
             echo "Nieznana opcja."
