@@ -124,6 +124,12 @@ zenity_interface() {
     esac
 }
 
+# Sprawdzenie, czy podano jakiekolwiek opcje
+if [[ $# -eq 0 ]]; then
+    help
+    exit
+fi
+
 while getopts dhrvsc OPT; do
     case $OPT in
         h)
