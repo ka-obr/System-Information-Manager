@@ -1,8 +1,10 @@
-# Author           : Karol Obrycki
+# Author           : Imie Nazwisko (karol.obrycki11@gmail.com)
 # Created On       : 29.04.2025
-# Last Modified By : Karol Obrycki
-# Last Modified On : 03.05.2025 
-# Version          : 0.1
+# Last Modified By : Imie Nazwisko (karol.obrycki11@gmail.com)
+# Last Modified On : 14.05.2025
+# Version          : 1.0
+#
+# Description      : System Information Manager
 #
 # Licensed under GPL (see /usr/share/common-licenses/GPL for more details
 # or contact # the Free Software Foundation for a copy)
@@ -10,22 +12,25 @@
 #!/bin/bash
 
 # Importowanie modułu info_collector.sh
-source "/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/infoCollector.sh"
+source "infoCollector.sh"
 
 VERSION="1.0"
 AUTHOR="Karol Obrycki"
-CONFIG_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/config.txt"
-REPORT_FILE="/home/karol-obr/Pulpit/DuzySkryptGitHub/System-Information-Manager/tmp/system_report.txt"
-INTERVAL=3
+CONFIG_FILE="config.txt"
+REPORT_FILE=""
+INTERVAL=0
+
+# Importowanie konfiguracji z pliku
+source "configLoader.sh"
 
 help() {
     echo "Opcje:"
-    echo "-d            - dynamiczne odświeżanie co $INTERVAL sekund"
-    echo "-r            - zapisanie danych do raportu"
-    echo "-h            - pomoc"
-    echo "-v            - wersja i autor"
-    echo "-s            - zbieranie danych z systemu przez pewien czas"
-    echo "-z            - interfejs graficzny z użyciem zenity"
+    echo "-d <interwał>     - dynamiczne odświeżanie co n sekund"
+    echo "-r <okres>        - zapisanie danych do raportu"
+    echo "-h                - pomoc"
+    echo "-v                - wersja i autor"
+    echo "-s                - zbieranie danych z systemu przez pewien czas"
+    echo "-z                - interfejs graficzny z użyciem zenity"
 }
 
 show_version() {
@@ -39,8 +44,7 @@ dynamic_refresh() {
         echo "Dynamiczne odświeżanie co $INTERVAL sekund"
         echo "Czas: $(date)"
         collect_info
-        sleep "$INTERVAL" &  # Uruchamiamy sleep w tle
-        wait -n              # Czekamy na zakończenie sleep lub wciśnięcie klawisza
+        sleep "$INTERVAL"  # Uruchamiamy sleep w tle
         read -t 0.1 -n 1 key # Odczytujemy klawisz z timeoutem
         if [[ $key == "q" ]]; then
             echo "Wyjście z trybu dynamicznego."
@@ -63,28 +67,6 @@ save_report() {
     echo "Raport zapisany do $REPORT_FILE."
 }
 
-# Funkcja do odczytu konfiguracji
-load_config() {
-    if [[ -f "$CONFIG_FILE" ]]; then
-        source "$CONFIG_FILE"
-    else
-        echo "Plik konfiguracyjny nie istnieje. Tworzę domyślny plik."
-        save_config
-    fi
-}
-
-# Funkcja do zapisu konfiguracji
-save_config() {
-    cat > "$CONFIG_FILE" <<EOL
-# Konfiguracja dla System Information Manager
-INTERVAL=$INTERVAL
-REPORT_FILE=$REPORT_FILE
-EOL
-    echo "Konfiguracja zapisana do $CONFIG_FILE."
-}
-
-load_config
-
 zenity_interface() {
     local choice=$(zenity --list \
         --title="System Information Manager" \
@@ -100,10 +82,18 @@ zenity_interface() {
     case $choice in
         "Dynamiczne odświeżanie")
             INTERVAL=$(zenity --entry --title="Dynamiczne odświeżanie" --text="Podaj interwał w sekundach:" --entry-text="3")
-            dynamic_refresh "$INTERVAL"
+            if ! [[ "$INTERVAL" =~ ^[0-9]+$ ]]; then
+                zenity --error --title="Błąd" --text="Interwał musi być liczbą całkowitą."
+                return
+            fi
+            dynamic_refresh
             ;;
         "Zapis raportu")
             local duration=$(zenity --entry --title="Zapis raportu" --text="Podaj czas trwania w sekundach:" --entry-text="10")
+            if ! [[ "$duration" =~ ^[0-9]+$ ]]; then
+                zenity --error --title="Błąd" --text="Czas trwania musi być liczbą całkowitą."
+                return
+            fi
             save_report "$duration"
             ;;
         "Wyświetl dane")
@@ -114,9 +104,6 @@ zenity_interface() {
             ;;
         "Wersja")
             zenity --info --title="Wersja" --text="$(show_version)"
-            ;;
-        "Zapisz konfigurację")
-            save_config
             ;;
         *)
             zenity --error --title="Błąd" --text="Nieznana opcja lub anulowano wybór."
@@ -130,16 +117,27 @@ if [[ $# -eq 0 ]]; then
     exit
 fi
 
-while getopts dhrvsc OPT; do
+while getopts d:hr:vsz OPT 2>/dev/null; do
     case $OPT in
         h)
             help
             exit;;
         d)
-            dynamic_refresh
+            INTERVAL=$OPTARG
+            if ! [[ "$INTERVAL" =~ ^[0-9]+$ ]]; then
+                echo "Błąd: Interwał musi być liczbą całkowitą."
+                exit 1
+            fi
+
+            dynamic_refresh 
             exit;;
         r)
-            read -p "Podaj czas trwania w sekundach: " duration
+            duration=$OPTARG
+            if ! [[ "$duration" =~ ^[0-9]+$ ]]; then
+                echo "Błąd: Czas trwania musi być liczbą całkowitą."
+                exit 1
+            fi
+
             save_report "$duration"
             exit;;
         v)
@@ -151,11 +149,7 @@ while getopts dhrvsc OPT; do
         z)
             zenity_interface
             exit;;
-        c)
-            save_config
-            echo "Konfiguracja została zapisana do pliku $CONFIG_FILE."
-            exit;;
-        *)
+        ?)
             echo "Nieznana opcja."
             help
             exit 1;;

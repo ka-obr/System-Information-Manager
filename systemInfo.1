@@ -1,20 +1,26 @@
-.TH SYSTEMINFO 1 "08 May 2025" "Version 1.0" "System Information Manager Manual"
+.TH SYSTEMINFO 1 "14 May 2025" "Version 1.0" "System Information Manager Manual"
 .SH NAME
 systemInfo \- skrypt do zbierania informacji o systemie i generowania raportów
+
 .SH SYNOPSIS
 .B systemInfo
-[\-d] [\-r] [\-h] [\-v] [\-s] [\-z]
+[\-d <interwał>] [\-r <okres>] [\-h] [\-v] [\-s] [\-z]
+
 .SH DESCRIPTION
 Skrypt \fBsystemInfo\fR służy do zbierania informacji o systemie, takich jak dane o CPU, pamięci, dyskach i systemie operacyjnym. Może działać w trybie dynamicznego odświeżania, generować raporty lub wyświetlać wersję i autora.
 
 \fBWAŻNE:\fR Skrypt wymaga podania przynajmniej jednej flagi. Uruchomienie skryptu bez flag spowoduje wyświetlenie pomocy (\fB-h\fR).
 .SH OPTIONS
 .TP
-.B \-d
-Uruchamia tryb dynamicznego odświeżania informacji o systemie co określoną liczbę sekund (domyślnie 3 sekundy). Aby wyjść z trybu, naciśnij \fBq\fR.
+.B \-d <interwał>
+Uruchamia tryb dynamicznego odświeżania informacji o systemie co określoną liczbę sekund. 
+\fBWymaga podania parametru\fR, który określa interwał w sekundach (np. \fB-d 5\fR). 
+Domyślnie interwał wynosi 3 sekundy. Aby wyjść z trybu, naciśnij \fBq\fR.
 .TP
-.B \-r
-Zapisuje dane do raportu w pliku \fBsystem_report.txt\fR. Użytkownik jest proszony o podanie czasu trwania w sekundach.
+.B \-r <okres>
+Zapisuje dane do raportu w pliku \fBsystem_report.txt\fR. 
+\fBWymaga podania parametru\fR, który określa czas trwania w sekundach (np. \fB-r 10\fR). 
+Raport zawiera szczegółowe informacje o systemie zebrane w określonym czasie odświeżanym co \fBDomyślny\fR interwał.
 .TP
 .B \-h
 Wyświetla pomoc dotyczącą użycia skryptu.
@@ -27,6 +33,24 @@ Zbiera informacje o systemie i wyświetla je w terminalu.
 .TP
 .B \-z
 Uruchamia interfejs graficzny z użyciem Zenity, który pozwala użytkownikowi wybrać jedną z dostępnych opcji, takich jak dynamiczne odświeżanie, zapis raportu, wyświetlenie pomocy, informacji o wersji itp.
+
+.SH CONFIGURATION
+Skrypt \fBsystemInfo\fR obsługuje plik konfiguracyjny \fBconfig.txt\fR, który pozwala na ustawienie dwóch zmiennych:
+
+.TP
+.B REPORT_FILE
+Ścieżka do pliku, w którym będą zapisywane raporty generowane przez skrypt. Jeśli nie zostanie podana, domyślnie ustawiana jest na \fBsystem_report.txt\fR.
+
+.TP
+.B INTERVAL
+Interwał czasowy w sekundach, co jaki będą odświeżane dane w trybie dynamicznego odświeżania. Jeśli nie zostanie podany, domyślnie ustawiany jest na \fB3 sekundy\fR.
+
+Jeśli plik konfiguracyjny nie istnieje lub jest pusty, skrypt automatycznie ustawia wartości domyślne dla obu zmiennych.
+
+Przykładowy plik \fBconfig.txt\fR:
+.nf
+system_report.txt,3
+.fi
 
 .SH AUTHOR
 Karol Obrycki
