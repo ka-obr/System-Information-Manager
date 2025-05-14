@@ -11,18 +11,19 @@
 
 #!/bin/bash
 
-# Importowanie modułu info_collector.sh
+# Importowanie modułu info_collector.sh, który zawiera funkcje do zbierania informacji o systemie
 source "infoCollector.sh"
 
 VERSION="1.0"
 AUTHOR="Karol Obrycki"
-CONFIG_FILE="config.txt"
-REPORT_FILE=""
-INTERVAL=0
+CONFIG_FILE="config.txt"  # Domyślny plik konfiguracyjny
+REPORT_FILE=""  # Plik raportu (wartość zostanie załadowana z konfiguracji)
+INTERVAL=0  # Interwał odświeżania (wartość zostanie załadowana z konfiguracji)
 
 # Importowanie konfiguracji z pliku
 source "configLoader.sh"
 
+# Funkcja wyświetlająca dostępne opcje skryptu
 help() {
     echo "Opcje:"
     echo "-d <interwał>     - dynamiczne odświeżanie co n sekund"
@@ -33,32 +34,35 @@ help() {
     echo "-z                - interfejs graficzny z użyciem zenity"
 }
 
+# Funkcja wyświetlająca wersję i autora skryptu
 show_version() {
     echo "Wersja: $VERSION"
     echo "Autor: $AUTHOR"
 }
 
+# Funkcja do dynamicznego odświeżania danych co określony interwał czasu
 dynamic_refresh() {
     while true; do
         clear
         echo "Dynamiczne odświeżanie co $INTERVAL sekund"
         echo "Czas: $(date)"
-        collect_info
-        sleep "$INTERVAL"  # Uruchamiamy sleep w tle
-        read -t 0.1 -n 1 key # Odczytujemy klawisz z timeoutem
-        if [[ $key == "q" ]]; then
+        collect_info 
+        sleep "$INTERVAL"  # Czeka przez określony interwał czasu
+        read -t 0.1 -n 1 key  # Sprawdza, czy użytkownik nacisnął klawisz
+        if [[ $key == "q" ]]; then  # Jeśli naciśnięto "q", wychodzi z pętli
             echo "Wyjście z trybu dynamicznego."
             break
         fi
     done
 }
 
+# Funkcja zapisująca raport z danymi systemowymi przez określony czas
 save_report() {
-    local duration=$1
-    local end_time=$((SECONDS + duration))
+    local duration=$1  # Czas trwania zbierania danych (local - tylko w tej funkcji)
+    local end_time=$((SECONDS + duration))  # Oblicza czas zakończenia
     echo "Zbieranie danych przez $duration sekund. Raport zostanie zapisany do $REPORT_FILE."
-    > "$REPORT_FILE"  # Wyczyszczenie pliku raportu
-    while [ $SECONDS -lt $end_time ]; do
+    > "$REPORT_FILE"  # Czyści plik raportu
+    while [ $SECONDS -lt $end_time ]; do # dopóki SECONDS (wbudowane w bash) jest mniejsze od end_time
         echo "Czas: $(date)" >> "$REPORT_FILE"
         collect_info >> "$REPORT_FILE"
         echo "-----------------------------" >> "$REPORT_FILE"
@@ -67,6 +71,7 @@ save_report() {
     echo "Raport zapisany do $REPORT_FILE."
 }
 
+# Funkcja obsługująca interfejs graficzny z użyciem Zenity
 zenity_interface() {
     local choice=$(zenity --list \
         --title="System Information Manager" \
@@ -79,10 +84,11 @@ zenity_interface() {
         "Wersja" "Informacje o wersji i autorze" \
         --width=600 --height=300)
 
+    # Obsługa wyboru użytkownika
     case $choice in
         "Dynamiczne odświeżanie")
             INTERVAL=$(zenity --entry --title="Dynamiczne odświeżanie" --text="Podaj interwał w sekundach:" --entry-text="3")
-            if ! [[ "$INTERVAL" =~ ^[0-9]+$ ]]; then
+            if ! [[ "$INTERVAL" =~ ^[0-9]+$ ]]; then  # Walidacja, czy interwał jest liczbą
                 zenity --error --title="Błąd" --text="Interwał musi być liczbą całkowitą."
                 return
             fi
